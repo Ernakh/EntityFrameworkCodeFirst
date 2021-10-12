@@ -10,7 +10,8 @@ namespace EFCExample
 
         public Contexto()
         {
-            
+            //Add-Migration Initial
+            //Update-Database
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
