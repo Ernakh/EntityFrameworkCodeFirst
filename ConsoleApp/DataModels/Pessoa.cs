@@ -11,6 +11,6 @@ namespace EFCExample.DataModels
 
         //public List<Email> pessoaEmails { get; set; }
 
-        public ICollection<Email> Emails { get; set; }
+        public virtual ICollection<Email> Emails { get; set; }
     }
 }

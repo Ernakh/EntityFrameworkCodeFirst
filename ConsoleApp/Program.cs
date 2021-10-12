@@ -108,10 +108,28 @@ namespace EFCExample
                     Console.WriteLine("Informe o id da pessoa");
                     int idExc = int.Parse(Console.ReadLine());
                     Pessoa pExc = contexto.Pessoas.Find(idExc);
-                    contexto.Pessoas.Remove(pExc);
 
-                    contexto.SaveChanges();
-                    break;
+                    Console.WriteLine("Confirma a exclusão de " + pExc.nome);
+                    Console.WriteLine("E dos emails: ");
+
+                    foreach (Email itemEmail in pExc.Emails)
+                    {
+                        Console.WriteLine("   " + itemEmail.email);
+                    }
+
+                    Console.WriteLine("1 - Sim, 2 - Não ");
+
+                    if(int.Parse(Console.ReadLine()) == 1)
+                    {
+                        contexto.Pessoas.Remove(pExc);
+                        contexto.SaveChanges();
+                    }
+                    else if (int.Parse(Console.ReadLine()) == 2)
+                    {
+                        return;
+                    }
+
+                        break;
                 case 5:
                     List<Pessoa> lista = new List<Pessoa>();
                     lista = getAllPessoas(contexto);
@@ -140,7 +158,7 @@ namespace EFCExample
                     {
                         foreach (Email item in pessoa.Emails)
                         {
-                            Console.WriteLine(item.email);
+                            Console.WriteLine("    " + item.email);
                         }
                     }
 
@@ -165,6 +183,11 @@ namespace EFCExample
                 //return contexto
                 //.Pessoas
                 //.Where(p => p.id == id).SingleOrDefault<Pessoa>();
+
+
+                //List<Pessoa> teste = contexto.Pessoas
+                //    .Include(p => p.Emails)
+                //    .ToList<Pessoa>();
 
                 return contexto.Pessoas
                     .Include(p => p.Emails)

@@ -72,3 +72,5 @@ C:\Users\fabri\source\repos\EntitySolution\ConsoleApp\obj\Debug\netcoreapp3.1\EF
 C:\Users\fabri\source\repos\EntitySolution\ConsoleApp\obj\Debug\netcoreapp3.1\EFCExample.dll
 C:\Users\fabri\source\repos\EntitySolution\ConsoleApp\obj\Debug\netcoreapp3.1\EFCExample.pdb
 C:\Users\fabri\source\repos\EntitySolution\ConsoleApp\obj\Debug\netcoreapp3.1\EFCExample.genruntimeconfig.cache
+C:\Users\fabri\source\repos\EntitySolution\ConsoleApp\bin\Debug\netcoreapp3.1\Castle.Core.dll
+C:\Users\fabri\source\repos\EntitySolution\ConsoleApp\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Proxies.dll
