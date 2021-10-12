@@ -31,7 +31,14 @@ namespace EFCExample
              Model-First Approach
              */
 
-            Console.WriteLine("Informe 1 para criar uma pessoa, 2 para alterar, 3 para inserir email, 4 para excluir, 5 para consultar todos, 6 para consultar por ID");
+            Console.WriteLine("Informe " +
+                "1 para criar uma pessoa, " +
+                "2 para alterar nome, " +
+                "3 para inserir email, " +
+                "4 para excluir a pessoa, " +
+                "5 para consultar todos, " +
+                "6 para consultar por ID");
+
             int op = int.Parse(Console.ReadLine());
 
             Contexto contexto = new Contexto();
@@ -42,22 +49,35 @@ namespace EFCExample
                     try
                     {
                         Console.WriteLine("Insira o nome:");
-
                         Pessoa p = new Pessoa();
                         p.nome = Console.ReadLine();
+                        Console.WriteLine("Insira o email:");
+                        string temp = Console.ReadLine();
                         p.Emails = new List<Email>()
                         {
                             new Email()
                             {
-                                email = "fabriciotonettolondero@gmail.com"
-                            },
-                            new Email()
-                            {
-                                email = "fabriciotlondero@hotmail.com"
+                                email = temp
                             }
                         };
 
                         contexto.Pessoas.Add(p);
+                        contexto.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    break;
+                case 2:
+                    try
+                    {
+                        Console.WriteLine("Informe o id da pessoa");
+                        int id = int.Parse(Console.ReadLine());
+                        Pessoa pAlt = contexto.Pessoas.Find(id);
+                        Console.WriteLine("Insira o nome:");
+                        pAlt.nome = Console.ReadLine();
+                        contexto.Pessoas.Update(pAlt);
                         contexto.SaveChanges();
 
                     }
@@ -66,16 +86,49 @@ namespace EFCExample
                         Console.WriteLine(ex.Message);
                     }
                     break;
-                case 2:
+                case 3:
                     Console.WriteLine("Informe o id da pessoa");
-                    int id = int.Parse(Console.ReadLine());
+                    int idEm = int.Parse(Console.ReadLine());
+                    Pessoa pEm = contexto.Pessoas.Find(idEm);
+                    Console.WriteLine("Insira o novo email:");
+                    string emailTemp = Console.ReadLine();
+                    pEm.Emails = new List<Email>()
+                    {
+                        new Email()
+                        {
+                            email = emailTemp
+                        }
+                    };
+
+                    contexto.Pessoas.Update(pEm);
+                    contexto.SaveChanges();
 
                     break;
-                case 3:
-                    break;
                 case 4:
+                    Console.WriteLine("Informe o id da pessoa");
+                    int idExc = int.Parse(Console.ReadLine());
+                    Pessoa pExc = contexto.Pessoas.Find(idExc);
+                    contexto.Pessoas.Remove(pExc);
+
+                    contexto.SaveChanges();
                     break;
                 case 5:
+                    List<Pessoa> lista = new List<Pessoa>();
+                    lista = getAllPessoas(contexto);
+                    foreach (Pessoa pessoaItem in lista)
+                    {
+                        Console.WriteLine(pessoaItem.nome);
+                        if (pessoaItem.Emails != null)
+                        {
+                            foreach (Email emailItem in pessoaItem.Emails)
+                            {
+                                Console.WriteLine("    " + emailItem.email);
+                            }
+
+                            Console.WriteLine();
+                        }
+                    }
+
                     break;
                 case 6:
                     Console.WriteLine("Informe o id da pessoa");
@@ -113,9 +166,9 @@ namespace EFCExample
                 //.Pessoas
                 //.Where(p => p.id == id).SingleOrDefault<Pessoa>();
 
-                //return contexto.Pessoas
-                //    .Include(p => p.Emails)
-                //    .FirstOrDefault(x => x.id == id);
+                return contexto.Pessoas
+                    .Include(p => p.Emails)
+                    .FirstOrDefault(x => x.id == id);
 
                 //var x =
                 //    (from a in contexto.Pessoas.Where(e => e.id == id)
@@ -131,12 +184,19 @@ namespace EFCExample
                 //     select p).SingleOrDefault<Pessoa>();
 
                 //return
-                //    (from p in contexto.Pessoas.Include(e => e.Emails.Where(x=>x.pessoa.id == id))
+                //    (from p in contexto.Pessoas.Include(e => e.Emails.Where(x => x.pessoa.id == id))
                 //     where p.id == id
                 //     select p).SingleOrDefault<Pessoa>();
 
-                return null;
+                //return null;
             }
+        }
+
+        private static List<Pessoa> getAllPessoas(Contexto contexto)
+        {
+            return
+            (from Pessoa p in contexto.Pessoas
+             select p).Include(e => e.Emails).ToList<Pessoa>();
         }
     }
 }
